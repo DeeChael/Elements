@@ -7,7 +7,7 @@ import java.awt.Color
 
 class ElementReactionImpl(
     private val id: String,
-    private val color: Color
+    private val color: Color,
     private val formerElementType: ElementType,
     private val latterElementTypes: Array<ElementType>,
     private val trigger: ElementReactionTrigger
