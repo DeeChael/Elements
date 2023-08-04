@@ -1,0 +1,4 @@
+name: Elements
+main: net.deechael.elements.core.ElementsPlugin
+version: ${version}
+api-version: 1.20
