@@ -7,6 +7,8 @@ import org.bukkit.entity.Entity
 
 interface ElementApplication {
 
+    fun clear()
+
     fun getAppliedElementTypes(): List<ElementType>
 
     fun getGauge(elementType: ElementType): ElementGauge

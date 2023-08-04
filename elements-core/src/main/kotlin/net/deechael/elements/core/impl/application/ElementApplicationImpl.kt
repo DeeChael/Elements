@@ -16,6 +16,11 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
 
     private val appliedElements = mutableMapOf<ElementType, ElementGauge>()
     private val elementCancellingTasks = mutableMapOf<ElementType, BukkitTask>()
+    override fun clear() {
+        this.elementCancellingTasks.values.forEach(BukkitTask::cancel)
+        this.appliedElements.clear()
+        this.elementCancellingTasks.clear()
+    }
 
     override fun getAppliedElementTypes(): List<ElementType> {
         return this.appliedElements.keys.toList()
