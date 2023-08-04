@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
 class ElementApplicationManagerImpl: ElementApplicationManager, Listener {
@@ -18,6 +19,11 @@ class ElementApplicationManagerImpl: ElementApplicationManager, Listener {
     @EventHandler
     fun playerQuiting(event: PlayerQuitEvent) {
         this.applications.remove(event.player.entityId)
+    }
+
+    @EventHandler
+    fun entityDying(event: EntityDeathEvent) {
+        this.applications.remove(event.entity.entityId)
     }
 
     override fun getApplication(entity: Entity): ElementApplication {

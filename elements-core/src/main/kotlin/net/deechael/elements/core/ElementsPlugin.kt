@@ -13,6 +13,7 @@ import net.deechael.elements.core.impl.ElementTypeImpl
 import net.deechael.elements.core.impl.reaction.ElementReactionImpl
 import net.deechael.elements.core.registry.DefaultElementReactionRegistry
 import net.deechael.elements.core.registry.DefaultElementTypeRegistry
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.awt.Color
 
@@ -26,6 +27,7 @@ class ElementsPlugin: JavaPlugin(), ElementService {
     override fun onEnable() {
         DefaultElementTypeRegistry.registerAll(this)
         DefaultElementReactionRegistry.registerAll(this)
+        Bukkit.getPluginManager().registerEvents(this.elementApplicationManager, this)
     }
 
     override fun hasElementType(id: String): Boolean {
