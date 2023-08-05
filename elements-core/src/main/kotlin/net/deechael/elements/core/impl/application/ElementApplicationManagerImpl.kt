@@ -18,7 +18,7 @@ import java.time.Duration
 class ElementApplicationManagerImpl : ElementApplicationManager, Listener {
 
     private val applications = Caffeine.newBuilder()
-        .maximumSize(10000L)
+        .maximumSize(100_000L)
         .expireAfterWrite(Duration.ofMinutes(5))
         .expireAfterAccess(Duration.ofMinutes(5))
         .evictionListener<Int, ElementApplicationImpl> { key, value, cause ->
