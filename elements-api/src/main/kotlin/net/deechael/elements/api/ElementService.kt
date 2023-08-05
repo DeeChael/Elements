@@ -2,6 +2,7 @@ package net.deechael.elements.api
 
 import net.deechael.elements.api.application.ApplicationTrigger
 import net.deechael.elements.api.application.ElementApplicationManager
+import net.deechael.elements.api.application.source.SourceManager
 import net.deechael.elements.api.reaction.ElementReaction
 import net.deechael.elements.api.reaction.ElementReactionTrigger
 import org.bukkit.Bukkit
@@ -28,6 +29,8 @@ interface ElementService {
     fun registerElementReaction(id: String, color: Color, formerElementType: ElementType, latterElementTypes: Array<ElementType>, trigger: ElementReactionTrigger): ElementReaction
 
     fun getApplicationManager(): ElementApplicationManager
+
+    fun getSourceManager(): SourceManager
 
     companion object {
 

@@ -5,6 +5,8 @@ import org.bukkit.entity.Entity
 
 interface ElementApplicationManager {
 
+    fun hasApplied(entity: Entity): Boolean
+
     fun getApplication(entity: Entity): ElementApplication
 
     fun doElementalDamage(sufferer: Entity, source: ApplicationSource, damage: Double)

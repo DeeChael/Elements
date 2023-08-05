@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "net.deechael"
-version = properties["version"]!!
+version = properties["elements-version"]!!
 
 allprojects {
     apply {
@@ -29,11 +29,11 @@ allprojects {
     }
 
     tasks.withType<ProcessResources>().configureEach {
-        inputs.property("version", project.version)
+        inputs.property("version", rootProject.version)
         filesMatching(listOf("plugin.yml", "paper-plugin.yml")) {
             expand(
                 mapOf(
-                    Pair("version", project.version)
+                    Pair("version", rootProject.version)
                 )
             )
         }

@@ -6,19 +6,10 @@ import net.deechael.elements.core.impl.application.source.EnvironmentSourceImpl
 import net.deechael.elements.core.registry.DefaultElementTypeRegistry
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageByBlockEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerMoveEvent
 
 object PlayerListeners: Listener {
-
-    @EventHandler
-    fun event(event: PlayerDeathEvent) {
-        ElementsPlugin.getInstance()
-            .getApplicationManager()
-            .getApplication(event.player)
-            .clear()
-    }
 
     @EventHandler
     fun event(event: PlayerMoveEvent) {

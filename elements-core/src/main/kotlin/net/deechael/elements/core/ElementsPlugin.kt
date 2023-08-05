@@ -4,13 +4,17 @@ import net.deechael.elements.api.application.ElementApplicationManager
 import net.deechael.elements.api.ElementService
 import net.deechael.elements.api.ElementType
 import net.deechael.elements.api.application.ApplicationTrigger
+import net.deechael.elements.api.application.source.SourceManager
 import net.deechael.elements.api.reaction.ElementReaction
 import net.deechael.elements.api.reaction.ElementReactionTrigger
 import net.deechael.elements.core.impl.exception.ElementReactionExistedException
 import net.deechael.elements.core.impl.exception.ElementTypeExistedException
 import net.deechael.elements.core.impl.application.ElementApplicationManagerImpl
 import net.deechael.elements.core.impl.ElementTypeImpl
+import net.deechael.elements.core.impl.application.source.SourceManagerImpl
 import net.deechael.elements.core.impl.reaction.ElementReactionImpl
+import net.deechael.elements.core.listener.EntityListeners
+import net.deechael.elements.core.listener.PlayerListeners
 import net.deechael.elements.core.registry.DefaultElementReactionRegistry
 import net.deechael.elements.core.registry.DefaultElementTypeRegistry
 import org.bukkit.Bukkit
@@ -23,11 +27,14 @@ class ElementsPlugin: JavaPlugin(), ElementService {
     private val elementReactions = mutableMapOf<String, ElementReaction>()
     private val elementReactionsWithFormer = mutableMapOf<ElementType, MutableList<ElementReaction>>()
     private val elementApplicationManager = ElementApplicationManagerImpl()
+    private val sourceManager = SourceManagerImpl()
 
     override fun onEnable() {
         DefaultElementTypeRegistry.registerAll(this)
         DefaultElementReactionRegistry.registerAll(this)
         Bukkit.getPluginManager().registerEvents(this.elementApplicationManager, this)
+        Bukkit.getPluginManager().registerEvents(PlayerListeners, this)
+        Bukkit.getPluginManager().registerEvents(EntityListeners, this)
     }
 
     override fun hasElementType(id: String): Boolean {
@@ -103,6 +110,10 @@ class ElementsPlugin: JavaPlugin(), ElementService {
 
     override fun getApplicationManager(): ElementApplicationManager {
         return this.elementApplicationManager
+    }
+
+    override fun getSourceManager(): SourceManager {
+        return this.sourceManager
     }
 
     companion object {

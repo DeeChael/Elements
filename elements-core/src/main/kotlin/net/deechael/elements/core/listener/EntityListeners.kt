@@ -7,6 +7,7 @@ import net.deechael.elements.core.impl.application.source.EnvironmentSourceImpl
 import net.deechael.elements.core.registry.DefaultElementTypeRegistry
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.LightningStrike
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -39,11 +40,26 @@ object EntityListeners: Listener {
 
     @EventHandler
     fun event(event: EntityDamageByEntityEvent) {
+        if (event.damager is LightningStrike) {
+            ElementsPlugin.getInstance()
+                .getApplicationManager()
+                .getApplication(event.entity)
+                .applyElement(
+                    EnvironmentSourceImpl(
+                        event.entity.location,
+                        DefaultElementTypeRegistry.ELECTRO,
+                        ElementGauge(1)
+                    )
+                )
+            return
+        }
+        if (event.damager !is LivingEntity)
+            return
         val damager = event.damager as LivingEntity
         val item = damager.equipment!!.itemInMainHand
-        val itemMeta = item.itemMeta!!
+        val itemMeta = item.itemMeta ?: return
         if (itemMeta.hasEnchant(Enchantment.FIRE_ASPECT)) {
-            event.isCancelled = true
+            event.damage = 0.0
             val level = itemMeta.getEnchantLevel(Enchantment.FIRE_ASPECT).let {
                 return@let if (it < 0) {
                     0
@@ -61,22 +77,6 @@ object EntityListeners: Listener {
                         ElementGauge(1, level)
                     ),
                     event.finalDamage
-                )
-        }
-    }
-
-    @EventHandler
-    fun event(event: EntityDamageEvent) {
-        if (event.cause == DamageCause.LIGHTNING) {
-            ElementsPlugin.getInstance()
-                .getApplicationManager()
-                .getApplication(event.entity)
-                .applyElement(
-                    EnvironmentSourceImpl(
-                        event.entity.location,
-                        DefaultElementTypeRegistry.ELECTRO,
-                        ElementGauge(1)
-                    )
                 )
         }
     }

@@ -6,7 +6,7 @@ import net.deechael.elements.api.application.source.PluginSource
 import org.bukkit.plugin.Plugin
 
 class PluginSourceImpl(
-    val plugin: Plugin,
+    private val plugin: Plugin,
     elementType: ElementType,
     gauge: ElementGauge
 ) : ApplicationSourceImpl(elementType, gauge), PluginSource {

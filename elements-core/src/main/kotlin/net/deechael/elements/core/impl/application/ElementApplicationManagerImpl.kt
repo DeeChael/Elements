@@ -1,5 +1,7 @@
 package net.deechael.elements.core.impl.application
 
+import com.github.benmanes.caffeine.cache.Caffeine
+import com.github.benmanes.caffeine.cache.RemovalCause
 import net.deechael.elements.api.application.ElementApplication
 import net.deechael.elements.api.application.ElementApplicationManager
 import net.deechael.elements.api.application.source.ApplicationSource
@@ -11,23 +13,39 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import java.time.Duration
 
 class ElementApplicationManagerImpl: ElementApplicationManager, Listener {
 
-    private val applications = mutableMapOf<Int, ElementApplication>()
+    private val applications = Caffeine.newBuilder()
+        .maximumSize(10000L)
+        .expireAfterWrite(Duration.ofMinutes(5))
+        .expireAfterAccess(Duration.ofMinutes(5))
+        .evictionListener<Int, ElementApplication> { key, value, cause ->
+            if (cause != RemovalCause.EXPIRED)
+                return@evictionListener
+            if (value!!.getAppliedElementTypes().isEmpty())
+                return@evictionListener
+            this.recache(key!!, value)
+        }
+        .build<Int, ElementApplication>()
 
     @EventHandler
     fun playerQuiting(event: PlayerQuitEvent) {
-        this.applications.remove(event.player.entityId)
+        this.applications.invalidate(event.player.entityId)
     }
 
     @EventHandler
     fun entityDying(event: EntityDeathEvent) {
-        this.applications.remove(event.entity.entityId)
+        this.applications.invalidate(event.entity.entityId)
+    }
+
+    override fun hasApplied(entity: Entity): Boolean {
+        return this.applications.asMap().containsKey(entity.entityId)
     }
 
     override fun getApplication(entity: Entity): ElementApplication {
-        return applications.getOrPut(entity.entityId) { ElementApplicationImpl(entity) }
+        return applications.get(entity.entityId) { ElementApplicationImpl(entity) }
     }
 
     override fun doElementalDamage(sufferer: Entity, source: ApplicationSource, damage: Double) {
@@ -43,6 +61,10 @@ class ElementApplicationManagerImpl: ElementApplicationManager, Listener {
         )
         Bukkit.getPluginManager().callEvent(event)
         sufferer.damage(event.damage)
+    }
+
+    private fun recache(key: Int, value: ElementApplication) {
+        this.applications.put(key, value)
     }
 
 }

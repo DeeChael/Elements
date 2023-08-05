@@ -151,7 +151,7 @@ object DefaultElementReactionRegistry {
                     (applicationSource.getEntity() as LivingEntity).addPotionEffect(
                         PotionEffect(
                             PotionEffectType.DAMAGE_RESISTANCE,
-                            3,
+                            3 * 20,
                             1,
                         )
                     )
@@ -202,7 +202,7 @@ object DefaultElementReactionRegistry {
                         return
                     val damage = PotionEffect(
                         PotionEffectType.HARM,
-                        1,
+                        1 * 20,
                         1
                     )
                     sufferer.getNearbyEntities(3.0, 3.0, 3.0)
@@ -232,23 +232,23 @@ object DefaultElementReactionRegistry {
                     sufferer.addPotionEffects(listOf(
                         PotionEffect(
                             PotionEffectType.SLOW,
-                            5,
+                            5 * 20,
                             255
                         ),
                         PotionEffect(
                             PotionEffectType.SLOW_DIGGING,
-                            5,
+                            5 * 20,
                             255
                         ),
                         PotionEffect(
                             PotionEffectType.WEAKNESS,
-                            5,
+                            5 * 20,
                             255
                         ),
                         PotionEffect(
                             PotionEffectType.JUMP,
-                            5,
-                            255 // Over 127 will make player not able to jump
+                            5 * 20,
+                            128 // Over 127 will make player not able to jump
                         )
                     ))
                 }
@@ -320,7 +320,7 @@ object DefaultElementReactionRegistry {
                     (applicationSource.getEntity() as LivingEntity).addPotionEffect(
                         PotionEffect(
                             PotionEffectType.DAMAGE_RESISTANCE,
-                            3,
+                            3 * 20,
                             1,
                         )
                     )
@@ -366,7 +366,7 @@ object DefaultElementReactionRegistry {
                         return
                     val damage = PotionEffect(
                         PotionEffectType.HARM,
-                        1,
+                        1 * 20,
                         1
                     )
                     sufferer.getNearbyEntities(3.0, 3.0, 3.0)
@@ -394,7 +394,7 @@ object DefaultElementReactionRegistry {
                 ) {
                     val weak = PotionEffect(
                         PotionEffectType.WEAKNESS,
-                        12,
+                        12 * 20,
                         5
                     )
                     sufferer.getNearbyEntities(5.0, 5.0, 5.0)
@@ -484,7 +484,7 @@ object DefaultElementReactionRegistry {
                     (applicationSource.getEntity() as LivingEntity).addPotionEffect(
                         PotionEffect(
                             PotionEffectType.DAMAGE_RESISTANCE,
-                            3,
+                            3 * 20,
                             1,
                         )
                     )
@@ -527,23 +527,23 @@ object DefaultElementReactionRegistry {
                     sufferer.addPotionEffects(listOf(
                         PotionEffect(
                             PotionEffectType.SLOW,
-                            5,
+                            5 * 20,
                             255
                         ),
                         PotionEffect(
                             PotionEffectType.SLOW_DIGGING,
-                            5,
+                            5 * 20,
                             255
                         ),
                         PotionEffect(
                             PotionEffectType.WEAKNESS,
-                            5,
+                            5 * 20,
                             255
                         ),
                         PotionEffect(
                             PotionEffectType.JUMP,
-                            5,
-                            255 // Over 127 will make player not able to jump
+                            5 * 20,
+                            128 // Over 127 will make player not able to jump
                         )
                     ))
                 }
@@ -563,7 +563,7 @@ object DefaultElementReactionRegistry {
                 ) {
                     val weak = PotionEffect(
                         PotionEffectType.WEAKNESS,
-                        12,
+                        12 * 20,
                         5
                     )
                     sufferer.getNearbyEntities(5.0, 5.0, 5.0)
@@ -630,7 +630,7 @@ object DefaultElementReactionRegistry {
                     (applicationSource.getEntity() as LivingEntity).addPotionEffect(
                         PotionEffect(
                             PotionEffectType.DAMAGE_RESISTANCE,
-                            3,
+                            3 * 20,
                             1,
                         )
                     )
@@ -752,7 +752,7 @@ object DefaultElementReactionRegistry {
                     (applicationSource.getEntity() as LivingEntity).addPotionEffect(
                         PotionEffect(
                             PotionEffectType.DAMAGE_RESISTANCE,
-                            3,
+                            3 * 20,
                             1,
                         )
                     )
