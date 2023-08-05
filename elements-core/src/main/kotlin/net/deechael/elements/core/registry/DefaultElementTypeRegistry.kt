@@ -2,9 +2,7 @@ package net.deechael.elements.core.registry
 
 import net.deechael.elements.api.ElementService
 import net.deechael.elements.api.ElementType
-import net.deechael.elements.api.application.source.ApplicationSource
 import net.deechael.elements.core.util.Colors
-import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType

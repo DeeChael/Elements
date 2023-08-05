@@ -16,7 +16,14 @@ interface ElementService {
 
     fun getElementTypes(): List<ElementType>
 
-    fun registerElementType(id: String, color: Color, applicable: Boolean, reactable: Boolean, isReactionElement: Boolean = false, trigger: ApplicationTrigger = ApplicationTrigger.EMPTY_TRIGGER): ElementType
+    fun registerElementType(
+        id: String,
+        color: Color,
+        applicable: Boolean,
+        reactable: Boolean,
+        isReactionElement: Boolean = false,
+        trigger: ApplicationTrigger = ApplicationTrigger.EMPTY_TRIGGER
+    ): ElementType
 
     fun hasElementReaction(id: String): Boolean
 
@@ -26,7 +33,13 @@ interface ElementService {
 
     fun getElementReactionsWithFormerType(formerElementType: ElementType): List<ElementReaction>
 
-    fun registerElementReaction(id: String, color: Color, formerElementType: ElementType, latterElementTypes: Array<ElementType>, trigger: ElementReactionTrigger): ElementReaction
+    fun registerElementReaction(
+        id: String,
+        color: Color,
+        formerElementType: ElementType,
+        latterElementTypes: Array<ElementType>,
+        trigger: ElementReactionTrigger
+    ): ElementReaction
 
     fun getApplicationManager(): ElementApplicationManager
 

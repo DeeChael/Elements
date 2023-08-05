@@ -8,7 +8,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.plugin.Plugin
 
-class SourceManagerImpl: SourceManager {
+class SourceManagerImpl : SourceManager {
     override fun entity(entity: Entity, elementType: ElementType, gauge: ElementGauge): EntitySource {
         return EntitySourceImpl(entity, elementType, gauge)
     }

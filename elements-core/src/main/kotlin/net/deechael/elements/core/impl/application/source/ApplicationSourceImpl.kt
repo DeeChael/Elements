@@ -7,7 +7,7 @@ import net.deechael.elements.api.application.source.ApplicationSource
 abstract class ApplicationSourceImpl(
     private val elementType: ElementType,
     private val gauge: ElementGauge
-): ApplicationSource {
+) : ApplicationSource {
 
     override fun getElementType(): ElementType {
         return this.elementType

@@ -2,8 +2,6 @@ package net.deechael.elements.core.listener
 
 import net.deechael.elements.api.ElementGauge
 import net.deechael.elements.core.ElementsPlugin
-import net.deechael.elements.core.impl.application.source.EntitySourceImpl
-import net.deechael.elements.core.impl.application.source.EnvironmentSourceImpl
 import net.deechael.elements.core.registry.DefaultElementTypeRegistry
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -11,14 +9,10 @@ import org.bukkit.entity.LightningStrike
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityAirChangeEvent
 import org.bukkit.event.entity.EntityDamageByBlockEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause
-import org.bukkit.event.entity.ProjectileHitEvent
 
-object EntityListeners: Listener {
+object EntityListeners : Listener {
 
     @EventHandler
     fun event(event: EntityDamageByBlockEvent) {
@@ -29,11 +23,13 @@ object EntityListeners: Listener {
                 .getApplicationManager()
                 .getApplication(event.entity)
                 .applyElement(
-                    EnvironmentSourceImpl(
-                        event.damager!!.location,
-                        DefaultElementTypeRegistry.PYRO,
-                        ElementGauge(1)
-                    )
+                    ElementsPlugin.getInstance()
+                        .getSourceManager()
+                        .environment(
+                            event.damager!!.location,
+                            DefaultElementTypeRegistry.PYRO,
+                            ElementGauge(1)
+                        )
                 )
         }
     }
@@ -45,11 +41,13 @@ object EntityListeners: Listener {
                 .getApplicationManager()
                 .getApplication(event.entity)
                 .applyElement(
-                    EnvironmentSourceImpl(
-                        event.entity.location,
-                        DefaultElementTypeRegistry.ELECTRO,
-                        ElementGauge(1)
-                    )
+                    ElementsPlugin.getInstance()
+                        .getSourceManager()
+                        .environment(
+                            event.entity.location,
+                            DefaultElementTypeRegistry.ELECTRO,
+                            ElementGauge(1)
+                        )
                 )
             return
         }
@@ -71,11 +69,13 @@ object EntityListeners: Listener {
                 .getApplicationManager()
                 .doElementalDamage(
                     event.entity,
-                    EntitySourceImpl(
-                        damager,
-                        DefaultElementTypeRegistry.PYRO,
-                        ElementGauge(1, level)
-                    ),
+                    ElementsPlugin.getInstance()
+                        .getSourceManager()
+                        .entity(
+                            damager,
+                            DefaultElementTypeRegistry.PYRO,
+                            ElementGauge(1, level)
+                        ),
                     event.finalDamage
                 )
         }

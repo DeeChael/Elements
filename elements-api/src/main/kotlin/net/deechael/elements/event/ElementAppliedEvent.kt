@@ -1,8 +1,5 @@
 package net.deechael.elements.event
 
-import net.deechael.elements.api.ElementGauge
-import net.deechael.elements.api.ElementSourceType
-import net.deechael.elements.api.ElementType
 import net.deechael.elements.api.application.source.ApplicationSource
 import org.bukkit.entity.Entity
 import org.bukkit.event.Cancellable

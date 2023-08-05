@@ -15,20 +15,20 @@ import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import java.time.Duration
 
-class ElementApplicationManagerImpl: ElementApplicationManager, Listener {
+class ElementApplicationManagerImpl : ElementApplicationManager, Listener {
 
     private val applications = Caffeine.newBuilder()
         .maximumSize(10000L)
         .expireAfterWrite(Duration.ofMinutes(5))
         .expireAfterAccess(Duration.ofMinutes(5))
-        .evictionListener<Int, ElementApplication> { key, value, cause ->
+        .evictionListener<Int, ElementApplicationImpl> { key, value, cause ->
             if (cause != RemovalCause.EXPIRED)
                 return@evictionListener
             if (value!!.getAppliedElementTypes().isEmpty())
                 return@evictionListener
             this.recache(key!!, value)
         }
-        .build<Int, ElementApplication>()
+        .build<Int, ElementApplicationImpl>()
 
     @EventHandler
     fun playerQuiting(event: PlayerQuitEvent) {
@@ -63,8 +63,18 @@ class ElementApplicationManagerImpl: ElementApplicationManager, Listener {
         sufferer.damage(event.damage)
     }
 
-    private fun recache(key: Int, value: ElementApplication) {
+    private fun recache(key: Int, value: ElementApplicationImpl) {
         this.applications.put(key, value)
+    }
+
+    fun checkTimeout() {
+        for (application in this.applications.asMap().values) {
+            application.checkTimeOut()
+        }
+    }
+
+    fun clear() {
+        this.applications.cleanUp()
     }
 
 }

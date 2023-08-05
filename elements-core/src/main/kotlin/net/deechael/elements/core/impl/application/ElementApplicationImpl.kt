@@ -1,6 +1,12 @@
 package net.deechael.elements.core.impl.application
 
-import net.deechael.elements.api.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import net.deechael.elements.api.ElementGauge
+import net.deechael.elements.api.ElementType
+import net.deechael.elements.api.ElementTypeRemovalReason
 import net.deechael.elements.api.application.ElementApplication
 import net.deechael.elements.api.application.source.ApplicationSource
 import net.deechael.elements.core.ElementsPlugin
@@ -9,17 +15,15 @@ import net.deechael.elements.event.ElementReactedEvent
 import net.deechael.elements.event.ElementRemovalEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
-import org.bukkit.scheduler.BukkitRunnable
-import org.bukkit.scheduler.BukkitTask
 
 class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
 
     private val appliedElements = mutableMapOf<ElementType, ElementGauge>()
-    private val elementCancellingTasks = mutableMapOf<ElementType, BukkitTask>()
+    private val expiredTime = mutableMapOf<ElementType, Long>()
+
     override fun clear() {
-        this.elementCancellingTasks.values.forEach(BukkitTask::cancel)
         this.appliedElements.clear()
-        this.elementCancellingTasks.clear()
+        this.expiredTime.clear()
     }
 
     override fun getAppliedElementTypes(): List<ElementType> {
@@ -60,22 +64,9 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
         if (event.isCancelled)
             return
         this.appliedElements[source.getElementType()] = source.getElementGauge()
+        this.expiredTime[source.getElementType()] =
+            System.currentTimeMillis() + ((10.0 * source.getElementGauge().toDouble()).toLong() * 1000L)
         source.getElementType().getTrigger().trigger(source, this.entity)
-        if (elementCancellingTasks.containsKey(source.getElementType()))
-            elementCancellingTasks[source.getElementType()]!!.cancel()
-        elementCancellingTasks[source.getElementType()] = object : BukkitRunnable() {
-            override fun run() {
-                appliedElements.remove(source.getElementType())
-                elementCancellingTasks.remove(source.getElementType())
-                Bukkit.getPluginManager().callEvent(
-                    ElementRemovalEvent(
-                        this@ElementApplicationImpl.entity,
-                        ElementTypeRemovalReason.RUNNING_OUT,
-                        source.getElementType()
-                    )
-                )
-            }
-        }.runTaskLater(ElementsPlugin.getInstance(), (10.0 * source.getElementGauge().toDouble()).toLong() * 20L)
     }
 
     override fun applyElementWithDamage(source: ApplicationSource, damage: Double): Double {
@@ -92,7 +83,8 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
                         )
                         Bukkit.getPluginManager().callEvent(event)
                         reaction.getTrigger().trigger(reaction, source, entity, this.getGauge(appliedElement))
-                        val newDamage = reaction.getTrigger().triggerDamage(reaction, source, entity, this.getGauge(appliedElement), damage)
+                        val newDamage = reaction.getTrigger()
+                            .triggerDamage(reaction, source, entity, this.getGauge(appliedElement), damage)
                         this.appliedElements.remove(appliedElement)
                         return newDamage
                     }
@@ -109,23 +101,34 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
         if (event.isCancelled)
             return 0.0
         this.appliedElements[source.getElementType()] = source.getElementGauge()
+        this.expiredTime[source.getElementType()] =
+            System.currentTimeMillis() + ((10.0 * source.getElementGauge().toDouble()).toLong() * 1000L)
         source.getElementType().getTrigger().trigger(source, this.entity)
-        if (elementCancellingTasks.containsKey(source.getElementType()))
-            elementCancellingTasks[source.getElementType()]!!.cancel()
-        elementCancellingTasks[source.getElementType()] = object : BukkitRunnable() {
-            override fun run() {
-                appliedElements.remove(source.getElementType())
-                elementCancellingTasks.remove(source.getElementType())
-                Bukkit.getPluginManager().callEvent(
-                    ElementRemovalEvent(
-                        this@ElementApplicationImpl.entity,
-                        ElementTypeRemovalReason.RUNNING_OUT,
-                        source.getElementType()
-                    )
-                )
-            }
-        }.runTaskLater(ElementsPlugin.getInstance(), (10.0 * source.getElementGauge().toDouble()).toLong() * 20L)
         return damage
+    }
+
+    private fun callExpired(type: ElementType) {
+        appliedElements.remove(type)
+        expiredTime.remove(type)
+        Bukkit.getPluginManager().callEvent(
+            ElementRemovalEvent(
+                this@ElementApplicationImpl.entity,
+                ElementTypeRemovalReason.RUNNING_OUT,
+                type
+            )
+        )
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun checkTimeOut() {
+        val current = System.currentTimeMillis()
+        for (elementType in this.getAppliedElementTypes()) {
+            if (this.expiredTime[elementType]!! <= current) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    callExpired(elementType)
+                }
+            }
+        }
     }
 
 }

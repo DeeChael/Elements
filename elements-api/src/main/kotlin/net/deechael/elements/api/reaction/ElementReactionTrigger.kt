@@ -7,10 +7,21 @@ import org.bukkit.entity.Entity
 @FunctionalInterface
 interface ElementReactionTrigger {
 
-    fun trigger(reaction: ElementReaction, applicationSource: ApplicationSource, sufferer: Entity, formerElementTypeGauge: ElementGauge) {
+    fun trigger(
+        reaction: ElementReaction,
+        applicationSource: ApplicationSource,
+        sufferer: Entity,
+        formerElementTypeGauge: ElementGauge
+    ) {
     }
 
-    fun triggerDamage(reaction: ElementReaction, applicationSource: ApplicationSource, sufferer: Entity, formerElementTypeGauge: ElementGauge, originalDamage: Double): Double {
+    fun triggerDamage(
+        reaction: ElementReaction,
+        applicationSource: ApplicationSource,
+        sufferer: Entity,
+        formerElementTypeGauge: ElementGauge,
+        originalDamage: Double
+    ): Double {
         return originalDamage
     }
 

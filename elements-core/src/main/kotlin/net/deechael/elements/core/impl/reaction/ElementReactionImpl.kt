@@ -11,7 +11,7 @@ class ElementReactionImpl(
     private val formerElementType: ElementType,
     private val latterElementTypes: Array<ElementType>,
     private val trigger: ElementReactionTrigger
-): ElementReaction {
+) : ElementReaction {
 
     override fun getId(): String {
         return this.id

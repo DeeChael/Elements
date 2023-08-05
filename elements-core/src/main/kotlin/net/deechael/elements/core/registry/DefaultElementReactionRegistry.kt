@@ -6,7 +6,7 @@ import net.deechael.elements.api.application.source.ApplicationSource
 import net.deechael.elements.api.application.source.EntitySource
 import net.deechael.elements.api.reaction.ElementReaction
 import net.deechael.elements.api.reaction.ElementReactionTrigger
-import net.deechael.elements.core.impl.application.source.ReactionSourceImpl
+import net.deechael.elements.core.ElementsPlugin
 import net.deechael.elements.core.util.Colors
 import org.bukkit.entity.Creeper
 import org.bukkit.entity.Entity
@@ -43,6 +43,7 @@ object DefaultElementReactionRegistry {
                 ) {
                     sufferer.fireTicks = 0
                 }
+
                 override fun triggerDamage(
                     reaction: ElementReaction,
                     applicationSource: ApplicationSource,
@@ -124,11 +125,13 @@ object DefaultElementReactionRegistry {
                             it.fireTicks = 3 * 20
                             service.getApplicationManager().getApplication(it)
                                 .applyElement(
-                                    ReactionSourceImpl(
-                                        reaction,
-                                        DefaultElementTypeRegistry.PYRO,
-                                        formerElementTypeGauge.multiple(0.6)
-                                    )
+                                    ElementsPlugin.getInstance()
+                                        .getSourceManager()
+                                        .reaction(
+                                            reaction,
+                                            DefaultElementTypeRegistry.PYRO,
+                                            formerElementTypeGauge.multiple(0.6)
+                                        )
                                 )
                         }
                 }
@@ -175,6 +178,7 @@ object DefaultElementReactionRegistry {
                 ) {
                     sufferer.fireTicks = 0
                 }
+
                 override fun triggerDamage(
                     reaction: ElementReaction,
                     applicationSource: ApplicationSource,
@@ -229,28 +233,30 @@ object DefaultElementReactionRegistry {
                     formerElementTypeGauge: ElementGauge
                 ) {
                     sufferer as LivingEntity
-                    sufferer.addPotionEffects(listOf(
-                        PotionEffect(
-                            PotionEffectType.SLOW,
-                            5 * 20,
-                            255
-                        ),
-                        PotionEffect(
-                            PotionEffectType.SLOW_DIGGING,
-                            5 * 20,
-                            255
-                        ),
-                        PotionEffect(
-                            PotionEffectType.WEAKNESS,
-                            5 * 20,
-                            255
-                        ),
-                        PotionEffect(
-                            PotionEffectType.JUMP,
-                            5 * 20,
-                            128 // Over 127 will make player not able to jump
+                    sufferer.addPotionEffects(
+                        listOf(
+                            PotionEffect(
+                                PotionEffectType.SLOW,
+                                5 * 20,
+                                255
+                            ),
+                            PotionEffect(
+                                PotionEffectType.SLOW_DIGGING,
+                                5 * 20,
+                                255
+                            ),
+                            PotionEffect(
+                                PotionEffectType.WEAKNESS,
+                                5 * 20,
+                                255
+                            ),
+                            PotionEffect(
+                                PotionEffectType.JUMP,
+                                5 * 20,
+                                128 // Over 127 will make player not able to jump
+                            )
                         )
-                    ))
+                    )
                 }
             }
         )
@@ -268,11 +274,13 @@ object DefaultElementReactionRegistry {
                 ) {
                     service.getApplicationManager().getApplication(sufferer)
                         .applyElement(
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.REACTER_BLOOM,
-                                ElementGauge(1)
-                            )
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.REACTER_BLOOM,
+                                    ElementGauge(1)
+                                )
                         )
                 }
             }
@@ -293,11 +301,13 @@ object DefaultElementReactionRegistry {
                         .forEach {
                             service.getApplicationManager().getApplication(it)
                                 .applyElement(
-                                    ReactionSourceImpl(
-                                        reaction,
-                                        DefaultElementTypeRegistry.HYDRO,
-                                        formerElementTypeGauge.multiple(0.6)
-                                    )
+                                    ElementsPlugin.getInstance()
+                                        .getSourceManager()
+                                        .reaction(
+                                            reaction,
+                                            DefaultElementTypeRegistry.HYDRO,
+                                            formerElementTypeGauge.multiple(0.6)
+                                        )
                                 )
                         }
                 }
@@ -407,11 +417,13 @@ object DefaultElementReactionRegistry {
                         .forEach {
                             service.getApplicationManager().getApplication(it)
                                 .applyElement(
-                                    ReactionSourceImpl(
-                                        reaction,
-                                        DefaultElementTypeRegistry.CRYO,
-                                        formerElementTypeGauge.multiple(0.6)
-                                    )
+                                    ElementsPlugin.getInstance()
+                                        .getSourceManager()
+                                        .reaction(
+                                            reaction,
+                                            DefaultElementTypeRegistry.CRYO,
+                                            formerElementTypeGauge.multiple(0.6)
+                                        )
                                 )
                             it.addPotionEffect(weak)
                         }
@@ -432,11 +444,13 @@ object DefaultElementReactionRegistry {
                 ) {
                     service.getApplicationManager().getApplication(sufferer)
                         .applyElement(
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.REACTER_QUICKEN,
-                                ElementGauge(1)
-                            )
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.REACTER_QUICKEN,
+                                    ElementGauge(1)
+                                )
                         )
                 }
             }
@@ -457,11 +471,13 @@ object DefaultElementReactionRegistry {
                         .forEach {
                             service.getApplicationManager().getApplication(it)
                                 .applyElement(
-                                    ReactionSourceImpl(
-                                        reaction,
-                                        DefaultElementTypeRegistry.ELECTRO,
-                                        formerElementTypeGauge.multiple(0.6)
-                                    )
+                                    ElementsPlugin.getInstance()
+                                        .getSourceManager()
+                                        .reaction(
+                                            reaction,
+                                            DefaultElementTypeRegistry.ELECTRO,
+                                            formerElementTypeGauge.multiple(0.6)
+                                        )
                                 )
                         }
                 }
@@ -524,28 +540,30 @@ object DefaultElementReactionRegistry {
                     formerElementTypeGauge: ElementGauge
                 ) {
                     sufferer as LivingEntity
-                    sufferer.addPotionEffects(listOf(
-                        PotionEffect(
-                            PotionEffectType.SLOW,
-                            5 * 20,
-                            255
-                        ),
-                        PotionEffect(
-                            PotionEffectType.SLOW_DIGGING,
-                            5 * 20,
-                            255
-                        ),
-                        PotionEffect(
-                            PotionEffectType.WEAKNESS,
-                            5 * 20,
-                            255
-                        ),
-                        PotionEffect(
-                            PotionEffectType.JUMP,
-                            5 * 20,
-                            128 // Over 127 will make player not able to jump
+                    sufferer.addPotionEffects(
+                        listOf(
+                            PotionEffect(
+                                PotionEffectType.SLOW,
+                                5 * 20,
+                                255
+                            ),
+                            PotionEffect(
+                                PotionEffectType.SLOW_DIGGING,
+                                5 * 20,
+                                255
+                            ),
+                            PotionEffect(
+                                PotionEffectType.WEAKNESS,
+                                5 * 20,
+                                255
+                            ),
+                            PotionEffect(
+                                PotionEffectType.JUMP,
+                                5 * 20,
+                                128 // Over 127 will make player not able to jump
+                            )
                         )
-                    ))
+                    )
                 }
             }
         )
@@ -576,11 +594,13 @@ object DefaultElementReactionRegistry {
                         .forEach {
                             service.getApplicationManager().getApplication(it)
                                 .applyElement(
-                                    ReactionSourceImpl(
-                                        reaction,
-                                        DefaultElementTypeRegistry.CRYO,
-                                        formerElementTypeGauge.multiple(0.6)
-                                    )
+                                    ElementsPlugin.getInstance()
+                                        .getSourceManager()
+                                        .reaction(
+                                            reaction,
+                                            DefaultElementTypeRegistry.CRYO,
+                                            formerElementTypeGauge.multiple(0.6)
+                                        )
                                 )
                             it.addPotionEffect(weak)
                         }
@@ -603,11 +623,13 @@ object DefaultElementReactionRegistry {
                         .forEach {
                             service.getApplicationManager().getApplication(it)
                                 .applyElement(
-                                    ReactionSourceImpl(
-                                        reaction,
-                                        DefaultElementTypeRegistry.CRYO,
-                                        formerElementTypeGauge.multiple(0.6)
-                                    )
+                                    ElementsPlugin.getInstance()
+                                        .getSourceManager()
+                                        .reaction(
+                                            reaction,
+                                            DefaultElementTypeRegistry.CRYO,
+                                            formerElementTypeGauge.multiple(0.6)
+                                        )
                                 )
                         }
                 }
@@ -670,11 +692,13 @@ object DefaultElementReactionRegistry {
                 ) {
                     service.getApplicationManager().getApplication(sufferer)
                         .applyElement(
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.REACTER_BLOOM,
-                                ElementGauge(1)
-                            )
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.REACTER_BLOOM,
+                                    ElementGauge(1)
+                                )
                         )
                 }
             }
@@ -693,11 +717,13 @@ object DefaultElementReactionRegistry {
                 ) {
                     service.getApplicationManager().getApplication(sufferer)
                         .applyElement(
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.REACTER_QUICKEN,
-                                ElementGauge(1)
-                            )
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.REACTER_QUICKEN,
+                                    ElementGauge(1)
+                                )
                         )
                 }
             }
@@ -777,11 +803,13 @@ object DefaultElementReactionRegistry {
                     sufferer.getNearbyEntities(5.0, 5.0, 5.0).forEach {
                         service.getApplicationManager().doElementalDamage(
                             it,
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.DENDRO,
-                                ElementGauge(1)
-                            ),
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.DENDRO,
+                                    ElementGauge(1)
+                                ),
                             formerElementTypeGauge.toDouble() * 2
                         )
                     }
@@ -803,11 +831,13 @@ object DefaultElementReactionRegistry {
                     sufferer.getNearbyEntities(2.0, 2.0, 2.0).forEach {
                         service.getApplicationManager().doElementalDamage(
                             it,
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.DENDRO,
-                                ElementGauge(1)
-                            ),
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.DENDRO,
+                                    ElementGauge(1)
+                                ),
                             formerElementTypeGauge.toDouble() * 2
                         )
                     }
@@ -829,6 +859,7 @@ object DefaultElementReactionRegistry {
                 ) {
                     sufferer.location.world.createExplosion(sufferer.location, 2.0f)
                 }
+
                 override fun triggerDamage(
                     reaction: ElementReaction,
                     applicationSource: ApplicationSource,
@@ -855,15 +886,18 @@ object DefaultElementReactionRegistry {
                     sufferer.getNearbyEntities(3.0, 3.0, 3.0).forEach {
                         service.getApplicationManager().doElementalDamage(
                             it,
-                            ReactionSourceImpl(
-                                reaction,
-                                DefaultElementTypeRegistry.DENDRO,
-                                ElementGauge(1)
-                            ),
+                            ElementsPlugin.getInstance()
+                                .getSourceManager()
+                                .reaction(
+                                    reaction,
+                                    DefaultElementTypeRegistry.DENDRO,
+                                    ElementGauge(1)
+                                ),
                             formerElementTypeGauge.toDouble() * 1.5
                         )
                     }
                 }
+
                 override fun triggerDamage(
                     reaction: ElementReaction,
                     applicationSource: ApplicationSource,

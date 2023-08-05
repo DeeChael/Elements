@@ -1,7 +1,7 @@
 package net.deechael.elements.event
 
-import net.deechael.elements.api.reaction.ElementReaction
 import net.deechael.elements.api.application.source.ApplicationSource
+import net.deechael.elements.api.reaction.ElementReaction
 import org.bukkit.entity.Entity
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
