@@ -67,7 +67,7 @@ class ElementApplicationManagerImpl : ElementApplicationManager, Listener {
         this.applications.put(key, value)
     }
 
-    fun checkTimeout() {
+    suspend fun checkTimeout() {
         for (application in this.applications.asMap().values) {
             application.checkTimeOut()
         }

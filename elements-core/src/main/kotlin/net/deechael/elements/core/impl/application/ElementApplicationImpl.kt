@@ -1,9 +1,7 @@
 package net.deechael.elements.core.impl.application
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Runnable
 import net.deechael.elements.api.ElementGauge
 import net.deechael.elements.api.ElementType
 import net.deechael.elements.api.ElementTypeRemovalReason
@@ -49,6 +47,7 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
                         Bukkit.getPluginManager().callEvent(event)
                         reaction.getTrigger().trigger(reaction, source, entity, this.getGauge(appliedElement))
                         this.appliedElements.remove(appliedElement)
+                        this.expiredTime.remove(appliedElement)
                         return
                     }
                 }
@@ -86,6 +85,7 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
                         val newDamage = reaction.getTrigger()
                             .triggerDamage(reaction, source, entity, this.getGauge(appliedElement), damage)
                         this.appliedElements.remove(appliedElement)
+                        this.expiredTime.remove(appliedElement)
                         return newDamage
                     }
                 }
@@ -110,21 +110,22 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
     private fun callExpired(type: ElementType) {
         appliedElements.remove(type)
         expiredTime.remove(type)
-        Bukkit.getPluginManager().callEvent(
-            ElementRemovalEvent(
-                this@ElementApplicationImpl.entity,
-                ElementTypeRemovalReason.RUNNING_OUT,
-                type
+        Bukkit.getScheduler().runTask(ElementsPlugin.getInstance(), Runnable {
+            Bukkit.getPluginManager().callEvent(
+                ElementRemovalEvent(
+                    this@ElementApplicationImpl.entity,
+                    ElementTypeRemovalReason.RUNNING_OUT,
+                    type
+                )
             )
-        )
+        })
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun checkTimeOut() {
         val current = System.currentTimeMillis()
         for (elementType in this.getAppliedElementTypes()) {
             if (this.expiredTime[elementType]!! <= current) {
-                GlobalScope.launch(Dispatchers.Main) {
+                runBlocking {
                     callExpired(elementType)
                 }
             }
