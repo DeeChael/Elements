@@ -3,6 +3,7 @@ package net.deechael.elements.api
 import net.deechael.elements.api.application.ApplicationTrigger
 import net.deechael.elements.api.application.ElementApplicationManager
 import net.deechael.elements.api.application.source.SourceManager
+import net.deechael.elements.api.mute.ElementMuteManager
 import net.deechael.elements.api.reaction.ElementReaction
 import net.deechael.elements.api.reaction.ElementReactionTrigger
 import org.bukkit.Bukkit
@@ -44,6 +45,8 @@ interface ElementService {
     fun getApplicationManager(): ElementApplicationManager
 
     fun getSourceManager(): SourceManager
+
+    fun getMuteManager(): ElementMuteManager
 
     companion object {
 

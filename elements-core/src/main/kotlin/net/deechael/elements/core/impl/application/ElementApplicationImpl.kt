@@ -33,6 +33,8 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
     }
 
     override fun applyElement(source: ApplicationSource) {
+        if (ElementsPlugin.getInstance().getMuteManager().hasMuteElementType(this.entity, source.getElementType()))
+            return
         if (source.getElementGauge().toDouble() <= 0)
             return
         if (source.getElementType().isReactable()) {
@@ -69,6 +71,8 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
     }
 
     override fun applyElementWithDamage(source: ApplicationSource, damage: Double): Double {
+        if (ElementsPlugin.getInstance().getMuteManager().hasMuteElementType(this.entity, source.getElementType()))
+            return 0.0
         if (source.getElementGauge().toDouble() <= 0)
             return damage
         if (source.getElementType().isReactable()) {

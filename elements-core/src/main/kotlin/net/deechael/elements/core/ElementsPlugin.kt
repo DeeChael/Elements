@@ -6,6 +6,7 @@ import net.deechael.elements.api.ElementType
 import net.deechael.elements.api.application.ApplicationTrigger
 import net.deechael.elements.api.application.ElementApplicationManager
 import net.deechael.elements.api.application.source.SourceManager
+import net.deechael.elements.api.mute.ElementMuteManager
 import net.deechael.elements.api.reaction.ElementReaction
 import net.deechael.elements.api.reaction.ElementReactionTrigger
 import net.deechael.elements.core.impl.ElementTypeImpl
@@ -13,6 +14,7 @@ import net.deechael.elements.core.impl.application.ElementApplicationManagerImpl
 import net.deechael.elements.core.impl.application.source.SourceManagerImpl
 import net.deechael.elements.core.impl.exception.ElementReactionExistedException
 import net.deechael.elements.core.impl.exception.ElementTypeExistedException
+import net.deechael.elements.core.impl.mute.ElementMuteManagerImpl
 import net.deechael.elements.core.impl.reaction.ElementReactionImpl
 import net.deechael.elements.core.listener.EntityListeners
 import net.deechael.elements.core.listener.PlayerListeners
@@ -29,6 +31,7 @@ class ElementsPlugin : JavaPlugin(), ElementService {
     private val elementReactionsWithFormer = mutableMapOf<ElementType, MutableList<ElementReaction>>()
     private val elementApplicationManager = ElementApplicationManagerImpl()
     private val sourceManager = SourceManagerImpl()
+    private val muteManager = ElementMuteManagerImpl()
     private lateinit var applicationClearingJob: Job
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -131,6 +134,10 @@ class ElementsPlugin : JavaPlugin(), ElementService {
 
     override fun getSourceManager(): SourceManager {
         return this.sourceManager
+    }
+
+    override fun getMuteManager(): ElementMuteManager {
+        return this.muteManager
     }
 
     companion object {
