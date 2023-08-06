@@ -16,6 +16,8 @@ object EntityListeners : Listener {
 
     @EventHandler
     fun event(event: EntityDamageByBlockEvent) {
+        if (event.entity !is LivingEntity)
+            return
         if (event.damager == null)
             return
         if (event.damager!!.type == Material.MAGMA_BLOCK) {
@@ -36,6 +38,8 @@ object EntityListeners : Listener {
 
     @EventHandler
     fun event(event: EntityDamageByEntityEvent) {
+        if (event.entity !is LivingEntity)
+            return
         if (event.damager is LightningStrike) {
             ElementsPlugin.getInstance()
                 .getApplicationManager()

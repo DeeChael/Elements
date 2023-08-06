@@ -71,6 +71,7 @@ class ElementsPlugin : JavaPlugin(), ElementService {
 
     override fun registerElementType(
         id: String,
+        icon: String,
         color: Color,
         applicable: Boolean,
         reactable: Boolean,
@@ -81,6 +82,7 @@ class ElementsPlugin : JavaPlugin(), ElementService {
             throw ElementTypeExistedException()
         val elementType = ElementTypeImpl(
             id.lowercase(),
+            icon,
             color,
             applicable,
             reactable,

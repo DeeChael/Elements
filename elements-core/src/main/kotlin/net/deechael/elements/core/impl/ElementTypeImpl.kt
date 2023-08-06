@@ -6,6 +6,7 @@ import java.awt.Color
 
 class ElementTypeImpl(
     private val id: String,
+    private val icon: String,
     private val color: Color,
     private val applicable: Boolean,
     private val reactable: Boolean,
@@ -15,6 +16,10 @@ class ElementTypeImpl(
 
     override fun getId(): String {
         return this.id
+    }
+
+    override fun getIcon(): String {
+        return this.icon
     }
 
     override fun getColor(): Color {

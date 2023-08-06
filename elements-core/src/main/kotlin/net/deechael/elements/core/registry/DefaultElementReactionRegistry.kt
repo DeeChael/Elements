@@ -67,11 +67,7 @@ object DefaultElementReactionRegistry {
                     sufferer: Entity,
                     formerElementTypeGauge: ElementGauge
                 ) {
-                    if (applicationSource is EntitySource) {
-                        sufferer.location.world.createExplosion(applicationSource.getEntity(), sufferer.location, 2.0f)
-                    } else {
-                        sufferer.location.world.createExplosion(sufferer.location, 2.0f)
-                    }
+                    sufferer.location.world.createExplosion(sufferer.location, 2.0f)
                 }
             }
         )
@@ -206,7 +202,7 @@ object DefaultElementReactionRegistry {
                         return
                     val damage = PotionEffect(
                         PotionEffectType.HARM,
-                        1 * 20,
+                        1,
                         1
                     )
                     sufferer.getNearbyEntities(3.0, 3.0, 3.0)
@@ -352,11 +348,7 @@ object DefaultElementReactionRegistry {
                     sufferer: Entity,
                     formerElementTypeGauge: ElementGauge
                 ) {
-                    if (applicationSource is EntitySource) {
-                        sufferer.location.world.createExplosion(applicationSource.getEntity(), sufferer.location, 2.0f)
-                    } else {
-                        sufferer.location.world.createExplosion(sufferer.location, 2.0f)
-                    }
+                    sufferer.location.world.createExplosion(sufferer.location, 2.0f)
                 }
             }
         )
@@ -376,7 +368,7 @@ object DefaultElementReactionRegistry {
                         return
                     val damage = PotionEffect(
                         PotionEffectType.HARM,
-                        1 * 20,
+                        1,
                         1
                     )
                     sufferer.getNearbyEntities(3.0, 3.0, 3.0)

@@ -40,17 +40,17 @@ class ElementsWeaponPlugin: JavaPlugin(), Listener {
         if (!this.service.hasElementType(elementId))
             return
         val element = this.service.getElementType(elementId)
-        event.damage = 0.0
         this.service.getApplicationManager()
             .doElementalDamage(
                 event.entity,
                 this.service.getSourceManager().entity(
-                    event.entity,
+                    damager,
                     element,
                     ElementGauge(1, 0)
                 ),
                 event.finalDamage
             )
+        event.damage = 0.0
     }
 
     override fun onEnable() {

@@ -39,7 +39,8 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
         }
         if (source.getElementGauge().toDouble() <= 0)
             return
-        this.react(source)
+        if (this.react(source) != null)
+            return
         if (!source.getElementType().isApplicable())
             return
         val event = ElementAppliedEvent(
@@ -88,10 +89,10 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
                             reaction
                         )
                         Bukkit.getPluginManager().callEvent(event)
-                        reaction.getTrigger().trigger(reaction, source, entity, this.getGauge(appliedElement))
-                        this.appliedElements.remove(appliedElement)
+                        val gauge = this.appliedElements.remove(appliedElement)!!
                         this.expiredTime.remove(appliedElement)
-                        return reaction.getTrigger().triggerDamage(reaction, source, entity, this.getGauge(appliedElement), damage)
+                        reaction.getTrigger().trigger(reaction, source, entity, gauge)
+                        return reaction.getTrigger().triggerDamage(reaction, source, entity, gauge, damage)
                     }
                 }
             }

@@ -7,6 +7,8 @@ interface ElementType {
 
     fun getId(): String
 
+    fun getIcon(): String
+
     fun getColor(): Color
 
     fun isApplicable(): Boolean

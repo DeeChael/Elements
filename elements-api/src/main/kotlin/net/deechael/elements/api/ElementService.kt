@@ -19,6 +19,7 @@ interface ElementService {
 
     fun registerElementType(
         id: String,
+        icon: String,
         color: Color,
         applicable: Boolean,
         reactable: Boolean,

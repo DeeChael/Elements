@@ -27,9 +27,9 @@ class ElementsDisplayPlugin: JavaPlugin(), Listener {
         val player = event.player
         cache[player.uniqueId] = object : BukkitRunnable() {
             override fun run() {
-                var component: Component = Component.text("Applied Elements:")
+                var component: Component = Component.empty()
                 for (element in service.getApplicationManager().getApplication(player).getAppliedElementTypes()) {
-                    component = component.appendSpace().append(Component.text(element.getId()).color(TextColor.color(element.getColor().rgb)))
+                    component = component.append(Component.text(element.getIcon()).color(TextColor.color(element.getColor().rgb))).appendSpace()
                 }
                 player.sendActionBar(component)
             }
@@ -49,7 +49,7 @@ class ElementsDisplayPlugin: JavaPlugin(), Listener {
             return
         var component: Component = Component.text("Applied Elements:")
         for (element in service.getApplicationManager().getApplication(event.rightClicked).getAppliedElementTypes()) {
-            component = component.appendSpace().append(Component.text(element.getId()).color(TextColor.color(element.getColor().rgb)))
+            component = component.appendSpace().append(Component.text(element.getIcon()).color(TextColor.color(element.getColor().rgb)))
         }
         event.player.sendMessage(component)
     }

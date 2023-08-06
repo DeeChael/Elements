@@ -33,6 +33,7 @@ object DefaultElementTypeRegistry {
     fun registerAll(service: ElementService) {
         this.PYRO = service.registerElementType(
             "pyro",
+            "🔥",
             Colors.Elements.PYRO,
             true,
             true
@@ -41,30 +42,35 @@ object DefaultElementTypeRegistry {
         }
         this.HYDRO = service.registerElementType(
             "hydro",
+            "\uD83C\uDF0A",
             Colors.Elements.HYDRO,
             true,
             true
         )
         this.ANEMO = service.registerElementType(
             "anemo",
+            "🍃",
             Colors.Elements.ANEMO,
             false,
             true
         )
         this.ELECTRO = service.registerElementType(
             "electro",
+            "⚡",
             Colors.Elements.ELECTRO,
             true,
             true
         )
         this.DENDRO = service.registerElementType(
             "dendro",
+            "🍀",
             Colors.Elements.DENDRO,
             true,
             true
         )
         this.CRYO = service.registerElementType(
             "cryo",
+            "🧊",
             Colors.Elements.CRYO,
             true,
             true
@@ -73,13 +79,14 @@ object DefaultElementTypeRegistry {
             sufferer.addPotionEffect(
                 PotionEffect(
                     PotionEffectType.SLOW,
-                    (10 * source.getElementGauge().toDouble()).toInt(),
-                    2
+                    (10 * source.getElementGauge().toDouble()).toInt() * 20,
+                    1
                 )
             )
         }
         this.GEO = service.registerElementType(
             "geo",
+            "🪨",
             Colors.Elements.GEO,
             false,
             true
@@ -87,6 +94,7 @@ object DefaultElementTypeRegistry {
 
         this.REACTER_BLOOM = service.registerElementType(
             "reacter_bloom",
+            "",
             Colors.Elements.DENDRO,
             true,
             true,
@@ -94,6 +102,7 @@ object DefaultElementTypeRegistry {
         )
         this.REACTER_QUICKEN = service.registerElementType(
             "reacter_quicken",
+            "",
             Colors.Elements.DENDRO,
             true,
             true,
