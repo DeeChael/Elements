@@ -33,28 +33,13 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
     }
 
     override fun applyElement(source: ApplicationSource) {
-        if (ElementsPlugin.getInstance().getMuteManager().hasMuteElementType(this.entity, source.getElementType()))
+        if (ElementsPlugin.getInstance().getMuteManager().hasMuteElementType(this.entity, source.getElementType())) {
+            this.applyElement(source)
             return
+        }
         if (source.getElementGauge().toDouble() <= 0)
             return
-        if (source.getElementType().isReactable()) {
-            for (appliedElement in this.appliedElements.keys) {
-                for (reaction in ElementsPlugin.getInstance().getElementReactionsWithFormerType(appliedElement)) {
-                    if (reaction.getLatterElementTypes().contains(source.getElementType())) {
-                        val event = ElementReactedEvent(
-                            this.entity,
-                            source,
-                            reaction
-                        )
-                        Bukkit.getPluginManager().callEvent(event)
-                        reaction.getTrigger().trigger(reaction, source, entity, this.getGauge(appliedElement))
-                        this.appliedElements.remove(appliedElement)
-                        this.expiredTime.remove(appliedElement)
-                        return
-                    }
-                }
-            }
-        }
+        this.react(source)
         if (!source.getElementType().isApplicable())
             return
         val event = ElementAppliedEvent(
@@ -64,17 +49,35 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
         Bukkit.getPluginManager().callEvent(event)
         if (event.isCancelled)
             return
-        this.appliedElements[source.getElementType()] = source.getElementGauge()
-        this.expiredTime[source.getElementType()] =
-            System.currentTimeMillis() + ((10.0 * source.getElementGauge().toDouble()).toLong() * 1000L)
+        this.addElementType(source)
         source.getElementType().getTrigger().trigger(source, this.entity)
     }
 
     override fun applyElementWithDamage(source: ApplicationSource, damage: Double): Double {
-        if (ElementsPlugin.getInstance().getMuteManager().hasMuteElementType(this.entity, source.getElementType()))
+        if (ElementsPlugin.getInstance().getMuteManager().hasMuteElementType(this.entity, source.getElementType())) {
+            this.applyElement(source)
             return 0.0
+        }
         if (source.getElementGauge().toDouble() <= 0)
             return damage
+        val newDamage = this.react(source)
+        if (newDamage != null)
+            return newDamage
+        if (!source.getElementType().isApplicable())
+            return damage
+        val event = ElementAppliedEvent(
+            this.entity,
+            source
+        )
+        Bukkit.getPluginManager().callEvent(event)
+        if (event.isCancelled)
+            return 0.0
+        this.addElementType(source)
+        source.getElementType().getTrigger().trigger(source, this.entity)
+        return damage
+    }
+
+    private fun react(source: ApplicationSource, damage: Double = 0.0): Double? {
         if (source.getElementType().isReactable()) {
             for (appliedElement in this.appliedElements.keys) {
                 for (reaction in ElementsPlugin.getInstance().getElementReactionsWithFormerType(appliedElement)) {
@@ -86,29 +89,20 @@ class ElementApplicationImpl(private val entity: Entity) : ElementApplication {
                         )
                         Bukkit.getPluginManager().callEvent(event)
                         reaction.getTrigger().trigger(reaction, source, entity, this.getGauge(appliedElement))
-                        val newDamage = reaction.getTrigger()
-                            .triggerDamage(reaction, source, entity, this.getGauge(appliedElement), damage)
                         this.appliedElements.remove(appliedElement)
                         this.expiredTime.remove(appliedElement)
-                        return newDamage
+                        return reaction.getTrigger().triggerDamage(reaction, source, entity, this.getGauge(appliedElement), damage)
                     }
                 }
             }
         }
-        if (!source.getElementType().isApplicable())
-            return damage
-        val event = ElementAppliedEvent(
-            this.entity,
-            source
-        )
-        Bukkit.getPluginManager().callEvent(event)
-        if (event.isCancelled)
-            return 0.0
+        return null
+    }
+
+    private fun addElementType(source: ApplicationSource) {
         this.appliedElements[source.getElementType()] = source.getElementGauge()
         this.expiredTime[source.getElementType()] =
             System.currentTimeMillis() + ((10.0 * source.getElementGauge().toDouble()).toLong() * 1000L)
-        source.getElementType().getTrigger().trigger(source, this.entity)
-        return damage
     }
 
     private fun callExpired(type: ElementType) {
