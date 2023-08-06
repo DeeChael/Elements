@@ -1,7 +1,7 @@
 package net.deechael.elements.core.impl.application
 
-import kotlinx.coroutines.*
 import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.runBlocking
 import net.deechael.elements.api.ElementGauge
 import net.deechael.elements.api.ElementType
 import net.deechael.elements.api.ElementTypeRemovalReason

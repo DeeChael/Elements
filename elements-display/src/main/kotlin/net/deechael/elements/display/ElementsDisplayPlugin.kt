@@ -6,7 +6,6 @@ import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityInteractEvent
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -14,9 +13,9 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
-import java.util.UUID
+import java.util.*
 
-class ElementsDisplayPlugin: JavaPlugin(), Listener {
+class ElementsDisplayPlugin : JavaPlugin(), Listener {
 
     private lateinit var service: ElementService
 
@@ -29,7 +28,9 @@ class ElementsDisplayPlugin: JavaPlugin(), Listener {
             override fun run() {
                 var component: Component = Component.empty()
                 for (element in service.getApplicationManager().getApplication(player).getAppliedElementTypes()) {
-                    component = component.append(Component.text(element.getIcon()).color(TextColor.color(element.getColor().rgb))).appendSpace()
+                    component = component.append(
+                        Component.text(element.getIcon()).color(TextColor.color(element.getColor().rgb))
+                    ).appendSpace()
                 }
                 player.sendActionBar(component)
             }
@@ -49,7 +50,8 @@ class ElementsDisplayPlugin: JavaPlugin(), Listener {
             return
         var component: Component = Component.text("Applied Elements:")
         for (element in service.getApplicationManager().getApplication(event.rightClicked).getAppliedElementTypes()) {
-            component = component.appendSpace().append(Component.text(element.getIcon()).color(TextColor.color(element.getColor().rgb)))
+            component = component.appendSpace()
+                .append(Component.text(element.getIcon()).color(TextColor.color(element.getColor().rgb)))
         }
         event.player.sendMessage(component)
     }

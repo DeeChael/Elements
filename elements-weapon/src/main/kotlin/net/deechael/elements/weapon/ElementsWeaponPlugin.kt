@@ -20,7 +20,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 
-class ElementsWeaponPlugin: JavaPlugin(), Listener {
+class ElementsWeaponPlugin : JavaPlugin(), Listener {
 
     private lateinit var service: ElementService
     private val elementTypeKey = NamespacedKey("elements", "element_type")
@@ -87,16 +87,18 @@ class ElementsWeaponPlugin: JavaPlugin(), Listener {
                             return true
                         val itemMeta = itemStack.itemMeta ?: return true
                         itemMeta.persistentDataContainer.set(elementTypeKey, PersistentDataType.STRING, element.getId())
-                        itemMeta.lore(mutableListOf(
-                            Component.empty(),
-                            Component.text("Element Applied:")
-                                .decoration(TextDecoration.ITALIC, false)
-                                .color(NamedTextColor.YELLOW)
-                                .decorate(TextDecoration.UNDERLINED),
-                            Component.text(element.getId())
-                                .decoration(TextDecoration.ITALIC, false)
-                                .color(TextColor.color(element.getColor().rgb))
-                        ))
+                        itemMeta.lore(
+                            mutableListOf(
+                                Component.empty(),
+                                Component.text("Element Applied:")
+                                    .decoration(TextDecoration.ITALIC, false)
+                                    .color(NamedTextColor.YELLOW)
+                                    .decorate(TextDecoration.UNDERLINED),
+                                Component.text(element.getId())
+                                    .decoration(TextDecoration.ITALIC, false)
+                                    .color(TextColor.color(element.getColor().rgb))
+                            )
+                        )
                         itemStack.itemMeta = itemMeta
                     }
                     return true

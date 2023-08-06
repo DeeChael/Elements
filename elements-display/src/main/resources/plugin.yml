@@ -2,4 +2,4 @@ name: ElementsDisplay
 main: net.deechael.elements.display.ElementsDisplayPlugin
 version: ${version}
 api-version: 1.20
-depend: [Elements]
+depend: [ Elements ]

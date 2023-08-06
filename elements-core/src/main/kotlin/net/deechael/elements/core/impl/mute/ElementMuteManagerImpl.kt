@@ -7,7 +7,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
 
-class ElementMuteManagerImpl: ElementMuteManager {
+class ElementMuteManagerImpl : ElementMuteManager {
 
     private val muteElementsKey = NamespacedKey("elements", "mute")
 
@@ -16,13 +16,21 @@ class ElementMuteManagerImpl: ElementMuteManager {
         if (newElements.contains(elementType))
             return
         newElements.add(elementType)
-        entity.persistentDataContainer.set(muteElementsKey, PersistentDataType.STRING, newElements.map(ElementType::getId).joinToString(";"))
+        entity.persistentDataContainer.set(
+            muteElementsKey,
+            PersistentDataType.STRING,
+            newElements.map(ElementType::getId).joinToString(";")
+        )
     }
 
     override fun removeMuteElementType(entity: Entity, elementType: ElementType) {
         val newElements = this.getMuteElementTypes(entity).toMutableList()
         newElements.remove(elementType)
-        entity.persistentDataContainer.set(muteElementsKey, PersistentDataType.STRING, newElements.map(ElementType::getId).joinToString(";"))
+        entity.persistentDataContainer.set(
+            muteElementsKey,
+            PersistentDataType.STRING,
+            newElements.map(ElementType::getId).joinToString(";")
+        )
     }
 
     override fun getMuteElementTypes(entity: Entity): List<ElementType> {

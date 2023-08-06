@@ -2,4 +2,4 @@ name: ElementsWeapon
 main: net.deechael.elements.weapon.ElementsWeaponPlugin
 version: ${version}
 api-version: 1.20
-depend: [Elements]
+depend: [ Elements ]
