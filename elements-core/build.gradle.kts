@@ -11,3 +11,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.3")
     implementation(project(":elements-api"))
 }
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+}
+
+tasks.shadowJar {
+    archiveClassifier.set("")
+}
